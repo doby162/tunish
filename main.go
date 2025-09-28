@@ -10,12 +10,21 @@ import (
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Handle("/", http.FileServer(http.Dir("frontend/toonishFE/dist/")))
+
+	// Serve static files from frontend/toonish/dist/
+	fs := http.FileServer(http.Dir("frontend/toonishFE/dist/"))
+
 	r.Get("/messages", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
-	r.Post("/message", func(w http.ResponseWriter, r *http.Request) {
+	r.Post("/messages", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
+
+	// This serves everything under "/"
+	r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+		http.StripPrefix("/", fs).ServeHTTP(w, r)
+	})
+
 	http.ListenAndServe(":3000", r)
 }
