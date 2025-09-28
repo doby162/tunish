@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -28,9 +28,9 @@ function App() {
         {pronounce: "OU as in wolf", display: "ʊ"},
         {pronounce: "OW as in how", display: "å"},
         {pronounce: "ORE as in your", display: "Ô"},
-        {pronounce: "blank", display: " "},
+        {pronounce: "blank", display: ""},
     ]
-    const consonants = [{pronounce: "B as in baby", display: "b"},
+    const consonants = [
         {pronounce: "B as in baby", display: "b"},
         {pronounce: "CH as in chat", display: "c"},
         {pronounce: "D as in dog", display: "d"},
@@ -38,7 +38,7 @@ function App() {
         {pronounce: "g as in gun", display: "g"},
         {pronounce: "H as in hop", display: "h"},
         {pronounce: "J as in jam", display: "j"},
-        {pronounce: "K as in kard", display: "K"},
+        {pronounce: "K as in kart", display: "k"},
         {pronounce: "L as in live", display: "l"},
         {pronounce: "M as in man", display: "m"},
         {pronounce: "N as in Net", display: "n"},
@@ -55,9 +55,9 @@ function App() {
         {pronounce: "Y as in you", display: "v"},
         {pronounce: "Z as in zip", display: "z"},
         {pronounce: "ZH as in Azure", display: "ʒ"},
-        {pronounce: "blank", display: " "},
+        {pronounce: "blank", display: ""},
     ]
-    let sendMessage = async (msg) => {
+    let sendMessage = async () => {
         const url = "/messages";
         try {
             const response = await fetch(url,
@@ -65,13 +65,14 @@ function App() {
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
+            setMsg('')
             // const result = await response.json();
             // console.log(result);
         } catch (error) {
             console.error(error.message);
         }
     }
-    let getMessages =  async () => {
+    let getMessages = async () => {
         const url = "/messages";
         try {
             const response = await fetch(url);
@@ -86,47 +87,55 @@ function App() {
     }
 
     return (
-    <>
-      <div className="card">
-          {messages.map((message)=>{
-              return <p>{message.message}</p>
-          })}
-        <input type='text' onChange={(e)=>{setMsg(e.target.value)}}/>
-        <button onClick={() => sendMessage(msg)}>
-          submit <code>(send)</code>
-        </button>
-          <button onClick={() => getMessages()}>
-              refresh
-              <code>(refresh)</code>
-          </button>
+        <>
+            <div className="card">
+                {messages.map((message) => {
+                    return <p>{message.message}</p>
+                })}
+                <input type='text' value={msg}></input>
+                <button onClick={() => sendMessage()}>
+                    submit <code>(send)</code>
+                </button>
+                <button onClick={() => getMessages()}>
+                    refresh
+                    <code>(refresh)</code>
+                </button>
 
 
-          <div style={{display: "flex"}}>
+                <div style={{display: "flex"}}>
 
-              <div>
-                  {inner}{shell}{mod? "_" : ""}
-                  <button onClick={()=>{setMod(!mod)}}> <code>mod</code></button>
-                  <code>vowels:</code>
-                  {vowels.map((v)=>{
-                      return <button onClick={()=>setShell(v.display)}>
-                          <p>{v.display}</p>
-                          <code>{v.pronounce}</code>
-                      </button>
-                  })}
-              </div>
-              <div>
-                  <code>consonants:</code>
-                  {consonants.map((v)=>{
-                      return <button onClick={()=>setInner(v.display)}>
-                          <p>{v.display}</p>
-                          <code>{v.pronounce}</code>
-                      </button>
-                  })}
-              </div>
-          </div>
-      </div>
-    </>
-  )
+                    <div>
+                        {inner}{shell}{mod ? "_" : ""}
+                        <button onClick={() => {
+                            setMod(!mod)
+                        }}><code>mod</code></button>
+                        <code>vowels:</code>
+                        {vowels.map((v) => {
+                            return <button onClick={() => setShell(v.display)}>
+                                <p>{v.display}</p>
+                                <code>{v.pronounce}</code>
+                            </button>
+                        })}
+                    </div>
+                    <div>
+                        <code>consonants:</code>
+                        {consonants.map((v) => {
+                            return <button onClick={() => setInner(v.display)}>
+                                <p>{v.display}</p>
+                                <code>{v.pronounce}</code>
+                            </button>
+                        })}
+                    </div>
+                    <button onClick={() => {
+                        setMsg(msg + inner + shell + (mod ? "_" : ""))
+                        setInner('')
+                        setShell('')
+                        setMod(false)
+                    }}><code>enter character</code></button>
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default App
