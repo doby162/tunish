@@ -9,8 +9,54 @@ function App() {
     const [shell, setShell] = useState('')
     const [inner, setInner] = useState('')
     const [mod, setMod] = useState(false)
-    const vowels = [{pronounce: "A as in glass", display: "æ"}]
-    const consonants = [{pronounce: "B as in baby", display: "b"}]
+    const vowels = [
+        {pronounce: "A as in glass", display: "æ"},
+        {pronounce: "AR as in arm", display: "Â"},
+        {pronounce: "AH as in swan", display: "ɑ"},
+        {pronounce: "AY as in bay", display: "é"},
+        {pronounce: "E as in end", display: "ɛ"},
+        {pronounce: "EE as in bee", display: "i"},
+        {pronounce: "EER as in beer", display: "Î"},
+        {pronounce: "EH as in the", display: "ə"},
+        {pronounce: "ERE as in air", display: "Ê"},
+        {pronounce: "I as in bit", display: "I"},
+        {pronounce: "IE as in guy", display: "á"},
+        {pronounce: "IR as in bird", display: "ɝ"},
+        {pronounce: "OH as in toe", display: "o"},
+        {pronounce: "OI as in toy", display: "ó"},
+        {pronounce: "OO as in too", display: "ú"},
+        {pronounce: "OU as in wolf", display: "ʊ"},
+        {pronounce: "OW as in how", display: "å"},
+        {pronounce: "ORE as in your", display: "Ô"},
+        {pronounce: "blank", display: " "},
+    ]
+    const consonants = [{pronounce: "B as in baby", display: "b"},
+        {pronounce: "B as in baby", display: "b"},
+        {pronounce: "CH as in chat", display: "c"},
+        {pronounce: "D as in dog", display: "d"},
+        {pronounce: "F as in fox", display: "f"},
+        {pronounce: "g as in gun", display: "g"},
+        {pronounce: "H as in hop", display: "h"},
+        {pronounce: "J as in jam", display: "j"},
+        {pronounce: "K as in kard", display: "K"},
+        {pronounce: "L as in live", display: "l"},
+        {pronounce: "M as in man", display: "m"},
+        {pronounce: "N as in Net", display: "n"},
+        {pronounce: "NG as in rink", display: "ŋ"},
+        {pronounce: "P as in poppy", display: "p"},
+        {pronounce: "R as in run", display: "r"},
+        {pronounce: "S as in sit", display: "s"},
+        {pronounce: "SH as in shut", display: "ʃ"},
+        {pronounce: "T as in tunic", display: "t"},
+        {pronounce: "TH as in thick", display: "θ"},
+        {pronounce: "TH as in this", display: "ð"},
+        {pronounce: "V as in vine", display: "v"},
+        {pronounce: "W as in wit", display: "v"},
+        {pronounce: "Y as in you", display: "v"},
+        {pronounce: "Z as in zip", display: "z"},
+        {pronounce: "ZH as in Azure", display: "ʒ"},
+        {pronounce: "blank", display: " "},
+    ]
     let sendMessage = async (msg) => {
         const url = "/messages";
         try {
@@ -63,7 +109,7 @@ function App() {
                   <code>vowels:</code>
                   {vowels.map((v)=>{
                       return <button onClick={()=>setShell(v.display)}>
-                          {v.display}
+                          <p>{v.display}</p>
                           <code>{v.pronounce}</code>
                       </button>
                   })}
@@ -72,7 +118,7 @@ function App() {
                   <code>consonants:</code>
                   {consonants.map((v)=>{
                       return <button onClick={()=>setInner(v.display)}>
-                          {v.display}
+                          <p>{v.display}</p>
                           <code>{v.pronounce}</code>
                       </button>
                   })}
