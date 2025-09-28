@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 }
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("./assets/Tunic.ttf") format("woff2"),
+  url("./assets/Tunic.ttf") format("woff");
+  font-weight: bold;
+  font-display: swap;
+}
+* {
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   font-family: "Open Sans";
+   font-weight: 400;
+ }
+
+code {
+  font-family: monospace; /* Ensures a monospaced font for code */
+}
