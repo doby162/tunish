@@ -4,30 +4,50 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [msg, setMsg] = useState('')
+    const [messages, setMessages] = useState([])
+    let sendMessage = async (msg) => {
+        const url = "/messages";
+        try {
+            const response = await fetch(url,
+                {method: 'POST', body: JSON.stringify({message: msg})});
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            // const result = await response.json();
+            // console.log(result);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    let getMessages =  async () => {
+        const url = "/messages";
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            setMessages(result.messages);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
-  return (
+    return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          {messages.map((message)=>{
+              return <p>{message.message}</p>
+          })}
+        <input type='text' onChange={(e)=>{setMsg(e.target.value)}}/>
+        <button onClick={() => sendMessage(msg)}>
+          submit
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+          <button onClick={() => getMessages()}>
+              refresh
+          </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

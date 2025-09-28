@@ -1,13 +1,34 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
+type postResponse struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+}
+type postRequest struct {
+	Message string `json:"message"`
+}
+
+type Message struct {
+	Message string `json:"message"`
+}
+
+type MessagesGetResponse struct {
+	Messages []Message `json:"messages"`
+}
+
 func main() {
+
+	messages := []Message{}
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -15,10 +36,33 @@ func main() {
 	fs := http.FileServer(http.Dir("frontend/toonishFE/dist/"))
 
 	r.Get("/messages", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
+		resp, err := json.Marshal(MessagesGetResponse{messages})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(resp)
+
 	})
 	r.Post("/messages", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
+		defer r.Body.Close()
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		var req postRequest
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		messages = append(messages, Message{req.Message})
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	})
 
 	// This serves everything under "/"
