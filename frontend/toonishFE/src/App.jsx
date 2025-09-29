@@ -18,7 +18,6 @@ function App() {
     const [toggleOuter3, setToggleOuter3] = useState(false)
     const [toggleOuter4, setToggleOuter4] = useState(false)
     const [toggleOuter5, setToggleOuter5] = useState(false)
-    const [toggleMod, setToggleMod] = useState(false)
 
     useEffect(() => {
         console.log((toggleInner1 * 1) + (toggleInner2 * 10) + (toggleInner3* 100) + (toggleInner4 * 1000) + (toggleInner5 * 10000) + (toggleInner6 * 100000))
@@ -71,7 +70,7 @@ function App() {
                 break
             case 111101: setInner('ʒ')
                 break
-            default: setInner(' ')
+            default: setInner('')
         }
 
     }, [toggleInner1, toggleInner2, toggleInner3, toggleInner4, toggleInner5, toggleInner6]);
@@ -135,7 +134,7 @@ function App() {
                 setShell('Ô')
                 break
             default:
-                setShell(' ')
+                setShell('')
         }
     }, [toggleOuter1, toggleOuter2, toggleOuter3, toggleOuter4, toggleOuter5]);
 
@@ -158,7 +157,7 @@ function App() {
         {pronounce: "OU as in wolf", display: "ʊ"},
         {pronounce: "OW as in how", display: "å"},
         {pronounce: "ORE as in your", display: "Ô"},
-        {pronounce: "blank", display: " "},
+        {pronounce: " ", display: ""},
     ]
     const consonants = [
         {pronounce: "B as in baby", display: "b"},
@@ -185,8 +184,25 @@ function App() {
         {pronounce: "Y as in you", display: "j"},
         {pronounce: "Z as in zip", display: "z"},
         {pronounce: "ZH as in Azure", display: "ʒ"},
-        {pronounce: "blank", display: " "},
+        {pronounce: " ", display: ""},
     ]
+    const combined = vowels.concat(consonants)
+    const readable = ()=> {
+        let str = ''
+        // let str = msg.length ? msg.split('').map((char) => {
+        //     let def = combined.find((e) => {
+        //         return e.display === char
+        //     })
+        //     return def?.pronounce
+        // }) : ""
+        str = str + combined.find((e) => {
+            return e.display === inner
+        })?.pronounce
+        str = str + combined.find((e) => {
+            return e.display === shell
+        })?.pronounce
+        return <code>{str}</code>
+    }
     let sendMessage = async () => {
         const url = "/messages";
         try {
@@ -217,7 +233,7 @@ function App() {
     }
 
     useEffect(() => {
-        setInterval(()=>{getMessages(), 1000})
+        setInterval(()=>{getMessages()}, 1000)
     }, []);
 
     return (
@@ -228,16 +244,16 @@ function App() {
                 })}
                 <input type='text' value={msg}></input>
                 <button onClick={() => sendMessage()}>
-                    submit <code>(send)</code>
+                    sɛnd <code>(send)</code>
                 </button>
                 <br />
                 {inner}{shell}{mod ? "_" : ""}
                 <br />
+                <br />
+                {readable()}
+                <br />
 
                 <div style={{display: "flex"}}>
-                    <button onClick={() => {
-                        setMod(!mod)
-                    }}><code>mod</code></button>
                     <br />
                     <div style={{width: '150px'}}>
                         <button onClick={()=>{setToggleInner4(!toggleInner4)}}>{toggleInner4 * 1}</button>
@@ -256,33 +272,32 @@ function App() {
                         <button onClick={()=>{setToggleOuter1(!toggleOuter1)}}>{toggleOuter1 * 1}</button>
                     </div>
                     <br />
-                    <button onClick={()=>{setToggleMod(!toggleMod)}}></button>
+                    <button onClick={()=>{setMsg(msg + " ")}}>spés <code>space</code></button>
+                    <button onClick={() => {
+                        setMod(!mod)
+                    }}>mɑd <code>mod</code></button>
 
-                    {/*<div>*/}
-                    {/*    <code>vowels:</code>*/}
-                    {/*    {vowels.map((v) => {*/}
-                    {/*        return <button onClick={() => setShell(v.display)}>*/}
-                    {/*            <p>{v.display}</p>*/}
-                    {/*            <code>{v.pronounce}</code>*/}
-                    {/*        </button>*/}
-                    {/*    })}*/}
-                    {/*</div>*/}
-                    {/*<div>*/}
-                    {/*    <code>consonants:</code>*/}
-                    {/*    {consonants.map((v) => {*/}
-                    {/*        return <button onClick={() => setInner(v.display)}>*/}
-                    {/*            <p>{v.display}</p>*/}
-                    {/*            <code>{v.pronounce}</code>*/}
-                    {/*        </button>*/}
-                    {/*    })}*/}
-                    {/*</div>*/}
                     <button onClick={() => {
                         setMsg(msg + inner + shell + (mod ? "_" : ""))
                         setInner('')
                         setShell('')
                         setMod(false)
-                    }}><code>enter character</code></button>
+                    }}>nə_trə_ kÎkæ_trə_ <code>enter character</code></button>
                 </div>
+            </div>
+            <div style={{width: '410px'}}>
+                {vowels.map((v) => {
+                    return <button onClick={() => setShell(v.display)}>
+                        <p>{v.display}</p>
+                    </button>
+                })}
+            </div>
+            <div style={{width: '640px'}}>
+                {consonants.map((v) => {
+                    return <button onClick={() => setInner(v.display)}>
+                        <p>{v.display}</p>
+                    </button>
+                })}
             </div>
         </>
     )
