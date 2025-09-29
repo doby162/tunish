@@ -249,9 +249,9 @@ function App() {
                     </div>
                     <br />
                     <div style={{width: '150px'}}>
-                        <button onClick={()=>{setToggleOuter5(!toggleOuter5)}}>{toggleOuter5 * 1}</button>
                         <button onClick={()=>{setToggleOuter4(!toggleOuter4)}}>{toggleOuter4 * 1}</button>
                         <button onClick={()=>{setToggleOuter3(!toggleOuter3)}}>{toggleOuter3 * 1}</button>
+                        <button onClick={()=>{setToggleOuter5(!toggleOuter5)}}>{toggleOuter5 * 1}</button>
                         <button onClick={()=>{setToggleOuter2(!toggleOuter2)}}>{toggleOuter2 * 1}</button>
                         <button onClick={()=>{setToggleOuter1(!toggleOuter1)}}>{toggleOuter1 * 1}</button>
                     </div>
