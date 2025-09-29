@@ -7,6 +7,7 @@ function App() {
     const [shell, setShell] = useState('')
     const [inner, setInner] = useState('')
     const [mod, setMod] = useState(false)
+    const [name, setName] = useState('')
     const [toggleInner1, setToggleInner1] = useState(false)
     const [toggleInner2, setToggleInner2] = useState(false)
     const [toggleInner3, setToggleInner3] = useState(false)
@@ -18,9 +19,11 @@ function App() {
     const [toggleOuter3, setToggleOuter3] = useState(false)
     const [toggleOuter4, setToggleOuter4] = useState(false)
     const [toggleOuter5, setToggleOuter5] = useState(false)
+    useEffect(() => {
+        setName(localStorage.getItem('name'))
+    }, []);
 
     useEffect(() => {
-        console.log((toggleInner1 * 1) + (toggleInner2 * 10) + (toggleInner3* 100) + (toggleInner4 * 1000) + (toggleInner5 * 10000) + (toggleInner6 * 100000))
         switch ((toggleInner1 * 1) + (toggleInner2 * 10) + (toggleInner3* 100) + (toggleInner4 * 1000) + (toggleInner5 * 10000) + (toggleInner6 * 100000)) {
             case 10001: setInner('b')
                 break
@@ -207,7 +210,7 @@ function App() {
         const url = "/messages";
         try {
             const response = await fetch(url,
-                {method: 'POST', body: JSON.stringify({message: msg})});
+                {method: 'POST', body: JSON.stringify({message: msg, name: name})});
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
@@ -240,11 +243,14 @@ function App() {
         <>
             <div className="card">
                 {messages.map((message) => {
-                    return <p>{message.message}</p>
+                    return <p>{message.name}<code> : </code>{message.message}</p>
                 })}
                 <input type='text' value={msg}></input>
                 <button onClick={() => sendMessage()}>
-                    sɛnd <code>(send)</code>
+                    sɛnd <code>send</code>
+                </button>
+                <button onClick={() => {setName(msg); localStorage.setItem('name', msg); setMsg('');}}>
+                    sɛt ném <code>set name</code>
                 </button>
                 <br />
                 {inner}{shell}{mod ? "_" : ""}

@@ -15,10 +15,12 @@ type postResponse struct {
 }
 type postRequest struct {
 	Message string `json:"message"`
+	Name    string `json:"name"`
 }
 
 type Message struct {
 	Message string `json:"message"`
+	Name    string `json:"name"`
 }
 
 type MessagesGetResponse struct {
@@ -57,7 +59,7 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		messages = append(messages, Message{req.Message})
+		messages = append(messages, Message{Message: req.Message, Name: req.Name})
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
