@@ -1,6 +1,4 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect, useState} from 'react'
 import './App.css'
 
 function App() {
@@ -28,7 +26,7 @@ function App() {
         {pronounce: "OU as in wolf", display: "ʊ"},
         {pronounce: "OW as in how", display: "å"},
         {pronounce: "ORE as in your", display: "Ô"},
-        {pronounce: "blank", display: ""},
+        {pronounce: "blank", display: " "},
     ]
     const consonants = [
         {pronounce: "B as in baby", display: "b"},
@@ -55,7 +53,7 @@ function App() {
         {pronounce: "Y as in you", display: "v"},
         {pronounce: "Z as in zip", display: "z"},
         {pronounce: "ZH as in Azure", display: "ʒ"},
-        {pronounce: "blank", display: ""},
+        {pronounce: "blank", display: " "},
     ]
     let sendMessage = async () => {
         const url = "/messages";
@@ -85,6 +83,10 @@ function App() {
             console.error(error.message);
         }
     }
+
+    useEffect(() => {
+        setInterval(()=>{getMessages(), 1000})
+    }, []);
 
     return (
         <>
