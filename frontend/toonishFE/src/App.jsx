@@ -245,7 +245,7 @@ function App() {
                 {messages.map((message) => {
                     return <p>{message.name}<code> : </code>{message.message}</p>
                 })}
-                <input type='text' value={msg}></input>
+                <input type='text' onChange={(e)=>setMsg(e.target.value)} value={msg}></input>
                 <button onClick={() => sendMessage()}>
                     sɛnd <code>send</code>
                 </button>
