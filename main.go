@@ -60,6 +60,9 @@ func main() {
 			return
 		}
 		messages = append(messages, Message{Message: req.Message, Name: req.Name})
+		if len(messages) > 10 {
+			messages = messages[len(messages)-10:]
+		}
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
