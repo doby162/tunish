@@ -169,7 +169,7 @@ function App() {
         {pronounce: "F as in fox", display: "f"},
         {pronounce: "g as in gun", display: "g"},
         {pronounce: "H as in hop", display: "h"},
-        {pronounce: "J as in jam", display: "j"},
+        {pronounce: "J as in jam", display: "ʤ"},
         {pronounce: "K as in kart", display: "k"},
         {pronounce: "L as in live", display: "l"},
         {pronounce: "M as in man", display: "m"},
@@ -201,9 +201,15 @@ function App() {
         str = str + combined.find((e) => {
             return e.display === inner
         })?.pronounce
-        str = str + combined.find((e) => {
+        let str2 = combined.find((e) => {
             return e.display === shell
         })?.pronounce
+        if (!mod) {
+            str = str + " " + str2
+        } else {
+            str = str2 + " " + str
+
+        }
         return <code>{str}</code>
     }
     let sendMessage = async () => {
@@ -270,9 +276,9 @@ function App() {
                         <button onClick={()=>{setToggleInner1(!toggleInner1)}}>{toggleInner1 * 1}</button>
                     </div>
                     <br />
-                    <div style={{width: '150px'}}>
+                    <button style={{margin: '20px', marginRight: "-12px"}} onClick={()=>{setToggleOuter3(!toggleOuter3)}}>{toggleOuter3 * 1}</button>
+                    <div style={{width: '120px'}}>
                         <button onClick={()=>{setToggleOuter4(!toggleOuter4)}}>{toggleOuter4 * 1}</button>
-                        <button onClick={()=>{setToggleOuter3(!toggleOuter3)}}>{toggleOuter3 * 1}</button>
                         <button onClick={()=>{setToggleOuter5(!toggleOuter5)}}>{toggleOuter5 * 1}</button>
                         <button onClick={()=>{setToggleOuter2(!toggleOuter2)}}>{toggleOuter2 * 1}</button>
                         <button onClick={()=>{setToggleOuter1(!toggleOuter1)}}>{toggleOuter1 * 1}</button>
