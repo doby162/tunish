@@ -83,7 +83,7 @@ function App() {
 
     return (
         <>
-            <div className="card">
+            <div>
                 <Switch checked={phonemeOrToggle} onChange={(e) => {
                     setPhonemeOrToggle(e.target.checked)
                 }}></Switch>

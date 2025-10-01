@@ -156,44 +156,54 @@ export const toggleBoard = (setShell, setInner) => {
         }
     }, [toggleOuter1, toggleOuter2, toggleOuter3, toggleOuter4, toggleOuter5]);
 
-    return <>
-        <div style={{width: '150px'}}>
-            <button onClick={() => {
-                setToggleInner4(!toggleInner4)
-            }}>{toggleInner4 * 1}</button>
-            <button onClick={() => {
-                setToggleInner5(!toggleInner5)
-            }}>{toggleInner5 * 1}</button>
-            <button onClick={() => {
-                setToggleInner6(!toggleInner6)
-            }}>{toggleInner6 * 1}</button>
-            <button onClick={() => {
-                setToggleInner3(!toggleInner3)
-            }}>{toggleInner3 * 1}</button>
-            <button onClick={() => {
-                setToggleInner2(!toggleInner2)
-            }}>{toggleInner2 * 1}</button>
-            <button onClick={() => {
-                setToggleInner1(!toggleInner1)
-            }}>{toggleInner1 * 1}</button>
+    return <div className={'flex'}>
+        <div style={{width: '50%'}}>
+            <div className={'flex'}>
+                <button onClick={() => {
+                    setToggleInner4(!toggleInner4)
+                }}>{toggleInner4 * 1}</button>
+                <button onClick={() => {
+                    setToggleInner5(!toggleInner5)
+                }}>{toggleInner5 * 1}</button>
+                <button onClick={() => {
+                    setToggleInner6(!toggleInner6)
+                }}>{toggleInner6 * 1}</button>
+            </div>
+            <div className={'flex'}>
+                <button onClick={() => {
+                    setToggleInner3(!toggleInner3)
+                }}>{toggleInner3 * 1}</button>
+                <button onClick={() => {
+                    setToggleInner2(!toggleInner2)
+                }}>{toggleInner2 * 1}</button>
+                <button onClick={() => {
+                    setToggleInner1(!toggleInner1)
+                }}>{toggleInner1 * 1}</button>
+            </div>
         </div>
-        <br/>
-        <button style={{margin: '20px', marginRight: "-12px"}} onClick={() => {
-            setToggleOuter3(!toggleOuter3)
-        }}>{toggleOuter3 * 1}</button>
-        <div style={{width: '120px'}}>
-            <button onClick={() => {
-                setToggleOuter4(!toggleOuter4)
-            }}>{toggleOuter4 * 1}</button>
-            <button onClick={() => {
-                setToggleOuter5(!toggleOuter5)
-            }}>{toggleOuter5 * 1}</button>
-            <button onClick={() => {
-                setToggleOuter2(!toggleOuter2)
-            }}>{toggleOuter2 * 1}</button>
-            <button onClick={() => {
-                setToggleOuter1(!toggleOuter1)
-            }}>{toggleOuter1 * 1}</button>
+
+        <div style={{width: '50%'}} className={'flex'}>
+            <div className={'flex'}>
+                <button onClick={() => {
+                    setToggleOuter3(!toggleOuter3)
+                }}>{toggleOuter3 * 1}</button>
+            </div>
+            <div className={'flexColumn'}>
+                <button onClick={() => {
+                    setToggleOuter4(!toggleOuter4)
+                }}>{toggleOuter4 * 1}</button>
+                <button onClick={() => {
+                    setToggleOuter2(!toggleOuter2)
+                }}>{toggleOuter2 * 1}</button>
+            </div>
+            <div className={'flexColumn'}>
+                <button onClick={() => {
+                    setToggleOuter5(!toggleOuter5)
+                }}>{toggleOuter5 * 1}</button>
+                <button onClick={() => {
+                    setToggleOuter1(!toggleOuter1)
+                }}>{toggleOuter1 * 1}</button>
+            </div>
         </div>
-    </>
+    </div>
 }
