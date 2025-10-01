@@ -84,12 +84,12 @@ function App() {
     return (
         <>
             <div>
-                <Switch checked={phonemeOrToggle} onChange={(e) => {
-                    setPhonemeOrToggle(e.target.checked)
-                }}></Switch>
                 {messages.map((message) => {
                     return <p>{message.name}<code> : </code>{message.message}</p>
                 })}
+                <Switch checked={phonemeOrToggle} onChange={(e) => {
+                    setPhonemeOrToggle(e.target.checked)
+                }}></Switch>
                 <input type='text' onChange={(e) => setMsg(e.target.value)} value={msg}></input>
                 <button onClick={() => sendMessage()}>
                     sɛnd <code>send</code>
