@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import './App.css'
+import Button from 'provider/Button'
 
 function App() {
     const [msg, setMsg] = useState('')
@@ -247,6 +248,7 @@ function App() {
 
     return (
         <>
+            <Button ></Button>
             <div className="card">
                 {messages.map((message) => {
                     return <p>{message.name}<code> : </code>{message.message}</p>
