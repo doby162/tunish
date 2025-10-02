@@ -34,7 +34,7 @@ export const toggleBoard = (setShell, setInner) => {
                 setInner('h')
                 break
             case 10100:
-                setInner('j')
+                setInner('ʤ')
                 break
             case 110001:
                 setInner('k')
