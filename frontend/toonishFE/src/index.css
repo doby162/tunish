@@ -45,6 +45,17 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin: 1px;
+}
+.key {
+  padding: 0.1em 1em;
+}
+.flex {
+  display: flex;
+}
+.flexColumn {
+  display: flex;
+  flex-direction: column;
 }
 button:hover {
   border-color: #646cff;
