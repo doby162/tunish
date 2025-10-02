@@ -2,10 +2,10 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import Button from 'provider/Button'
 import {combined} from "./components/phonemes.js";
-import {phonemeBoard} from "./components/phonemeBoard.jsx";
-import {toggleBoard} from "./components/toggleBoard.jsx";
+import {PhonemeBoard} from "./components/phonemeBoard.jsx";
+import {ToggleBoard} from "./components/toggleBoard.jsx";
 import Switch from '@mui/material/Switch';
-import {flashcards} from "./components/flashcards.jsx";
+import {Flashcards} from "./components/flashcards.jsx";
 
 function App() {
     const [msg, setMsg] = useState('')
@@ -26,9 +26,6 @@ function App() {
     const space = () => {
         setMsg(msg + " ")
     }
-
-    const phoneBoard = phonemeBoard(setShell, setInner)
-    const togBoard = toggleBoard(setShell, setInner)
 
     useEffect(() => {
         setName(localStorage.getItem('name'))
@@ -119,15 +116,10 @@ function App() {
                     setInner('')
                     setShell('')
                 }}>nə_trə_ kÎkæ_trə_ <code>enter character</code></button>
-                {phonemeOrToggle ? phoneBoard : togBoard}
+                {phonemeOrToggle ? <PhonemeBoard setShell={setShell} setInner={setInner}/> : <ToggleBoard setShell={setShell} setInner={setInner}/>}
 
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            {flashcards(inner, shell, mod)}
+            <Flashcards inner={inner} shell={shell} mod={mod} />
         </>
     )
 }

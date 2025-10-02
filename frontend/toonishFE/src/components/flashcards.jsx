@@ -1,7 +1,7 @@
 import {vowels, consonants} from "./phonemes.js";
 import React, {useEffect} from "react";
 
-export const flashcards = (inner, shell, mod) => {
+export const Flashcards = ({inner, shell, mod}) => {
     const [cardInner, setCardInner] = React.useState({})
     const [cardShell, setCardShell] = React.useState({})
     const [cardMod, setCardMod] = React.useState(false)
@@ -29,6 +29,11 @@ export const flashcards = (inner, shell, mod) => {
     }
 
     return <>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <button onClick={shuffle}><code>flash card</code></button>
         {cardShell.display || cardInner.display ? <code>{card}</code> : ''}
         {correct? <code> Correct!</code> : <></>}

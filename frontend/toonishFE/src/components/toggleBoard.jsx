@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {consonants, vowels} from "./phonemes.js";
 
-export const toggleBoard = (setShell, setInner) => {
+export const ToggleBoard = ({setShell, setInner}) => {
     const [toggleInner1, setToggleInner1] = useState(false)
     const [toggleInner2, setToggleInner2] = useState(false)
     const [toggleInner3, setToggleInner3] = useState(false)
