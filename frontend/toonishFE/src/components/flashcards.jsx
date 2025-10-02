@@ -18,12 +18,12 @@ export const flashcards = (inner, shell, mod) => {
     const shuffle = ()=> {
         setCardInner(consonants[Math.floor(Math.random()*consonants.length)]);
         setCardShell(vowels[Math.floor(Math.random()*vowels.length)]);
-        setCardMod(Math.random > 0.9)
+        setCardMod(Math.random() > 0.9)
     }
 
     let card = cardInner.pronounce
     if (cardMod) {
-        card = cardInner.pronounce + " " + card
+        card = cardShell.pronounce + " " + card
     } else {
         card = card + " " + cardShell.pronounce
     }
