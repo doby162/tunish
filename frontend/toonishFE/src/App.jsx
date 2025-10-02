@@ -4,6 +4,7 @@ import {combined} from "./components/phonemes.js";
 import {phonemeBoard} from "./components/phonemeBoard.jsx";
 import {toggleBoard} from "./components/toggleBoard.jsx";
 import Switch from '@mui/material/Switch';
+import {flashcards} from "./components/flashcards.jsx";
 
 function App() {
     const [msg, setMsg] = useState('')
@@ -119,7 +120,12 @@ function App() {
                 {phonemeOrToggle ? phoneBoard : togBoard}
 
             </div>
-
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            {flashcards(inner, shell, mod)}
         </>
     )
 }

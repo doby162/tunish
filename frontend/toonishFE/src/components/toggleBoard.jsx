@@ -24,8 +24,6 @@ export const toggleBoard = (setShell, setInner) => {
         } else {
             setInner('')
         }
-
-
     }, [toggleInner1, toggleInner2, toggleInner3, toggleInner4, toggleInner5, toggleInner6]);
     useEffect(() => {
         let code = (toggleOuter1 * 1) + (toggleOuter2 * 10) + (toggleOuter3 * 100) + (toggleOuter4 * 1000) + (toggleOuter5 * 10000)
@@ -33,9 +31,9 @@ export const toggleBoard = (setShell, setInner) => {
             return code === char.code
         })
         if (char) {
-            setInner(char.display)
+            setShell(char.display)
         } else {
-            setInner('')
+            setShell('')
         }
     }, [toggleOuter1, toggleOuter2, toggleOuter3, toggleOuter4, toggleOuter5]);
 
