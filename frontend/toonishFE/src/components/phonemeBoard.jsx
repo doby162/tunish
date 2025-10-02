@@ -1,7 +1,7 @@
 import {consonants, vowels} from "./phonemes.js";
 
 
-export const phonemeBoard = (setShell, setInner) => {
+export const PhonemeBoard = ({setShell, setInner}) => {
     return <div className={'flex'}>
         <div>
             {vowels.map((v) => {
