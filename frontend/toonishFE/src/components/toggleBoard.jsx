@@ -27,7 +27,7 @@ export const toggleBoard = (setShell, setInner) => {
             case 100110:
                 setInner('f')
                 break
-            case 11100:
+            case 100011:
                 setInner('g')
                 break
             case 10011:
