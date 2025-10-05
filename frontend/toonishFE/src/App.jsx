@@ -14,6 +14,7 @@ function App() {
     const [inner, setInner] = useState('')
     const [mod, setMod] = useState(false)
     const [phonemeOrToggle, setPhonemeOrToggle] = useState(false)
+    const [hasNotifications, setHasNotifications] = useState(Notification.permission)
 
     const appendToMsg = () => {
         setMsg(msg + inner + shell + (mod ? "_" : ""))
@@ -88,6 +89,10 @@ function App() {
                 <Switch checked={phonemeOrToggle} onChange={(e) => {
                     setPhonemeOrToggle(e.target.checked)
                 }}></Switch>
+                {hasNotifications === "granted" ? '' : <button onClick={()=>{
+                    let promise = Notification.requestPermission();
+                    promise.then(setHasNotifications(Notification.permission))
+                }}><code>Click to subscribe to notifications</code></button>}
                 <input type='text' onChange={(e) => setMsg(e.target.value)} value={msg}></input>
                 <button onClick={() => sendMessage()}>
                     sɛnd <code>send</code>

@@ -2,11 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
-	"net/http"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"io/ioutil"
+	"net/http"
 )
 
 type postResponse struct {
