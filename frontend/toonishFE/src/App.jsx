@@ -20,14 +20,11 @@ function App() {
 
     useEffect(() => {
         if (!conn.current) {
-            console.log("make socket")
-            conn.current = new WebSocket("wss://localhost:3000/ws")
+            conn.current = new WebSocket("wss://192.168.1.103:3000/ws")
             setTryHttp(false)
-            console.log(conn.current)
         }
         if(conn.current) {
             conn.current.onclose = function (evt) {
-                console.log(evt)
                 conn.current = null
                 setTryHttp(true)
             };
@@ -70,7 +67,7 @@ function App() {
     }
 
     let sendMessage = async () => {
-        if (conn.current) {
+        if (conn.current && conn.current.readyState === 1) {
             conn.current.send(JSON.stringify({message: msg, name: name}))
             setMsg('')
         } else {
@@ -103,7 +100,7 @@ function App() {
 
     useEffect(() => {
         getMessages()
-        if (!interval && (!conn.current || conn.current.readyState === 3)) {
+        if (!interval && (!conn.current || conn.current.readyState !== 1)) {
             setIntervalNum(setInterval(()=>{getMessages()}, 1000))
         } else {
             clearInterval(interval)
