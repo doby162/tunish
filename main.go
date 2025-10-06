@@ -74,5 +74,8 @@ func main() {
 		http.StripPrefix("/", fs).ServeHTTP(w, r)
 	})
 
-	http.ListenAndServe(":3000", r)
+	err := http.ListenAndServeTLS(":3000", "cert.pem", "key.pem", r)
+	if err != nil {
+		return
+	}
 }
