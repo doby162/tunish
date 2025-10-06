@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import './App.css'
 import {combined} from "./components/phonemes.js";
 import {PhonemeBoard} from "./components/phonemeBoard.jsx";
@@ -14,7 +14,23 @@ function App() {
     const [inner, setInner] = useState('')
     const [mod, setMod] = useState(false)
     const [phonemeOrToggle, setPhonemeOrToggle] = useState(false)
-    const [hasNotifications, setHasNotifications] = useState(Notification.permission)
+    const conn = useRef(null);
+
+    useEffect(() => {
+        if (!conn.current) {
+            console.log("make socket")
+            conn.current = new WebSocket("wss://localhost:3000/ws")
+        }
+
+        conn.current.onclose = function (evt) {
+            // on close
+            console.log(evt)
+        };
+        conn.current.onmessage = function (evt) {
+            // onmessage
+            setMessages(messages.concat(JSON.parse(evt.data)))
+        };
+    }, [conn, messages]);
 
     const appendToMsg = () => {
         setMsg(msg + inner + shell + (mod ? "_" : ""))
@@ -47,18 +63,21 @@ function App() {
         }
         return <code>{str}</code>
     }
+
     let sendMessage = async () => {
-        const url = "/messages";
-        try {
-            const response = await fetch(url,
-                {method: 'POST', body: JSON.stringify({message: msg, name: name})});
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-            setMsg('')
-        } catch (error) {
-            console.error(error.message);
-        }
+        conn.current.send(JSON.stringify({message: msg, name: name}))
+        setMsg('')
+        // const url = "/messages";
+        // try {
+        //     const response = await fetch(url,
+        //         {method: 'POST', body: JSON.stringify({message: msg, name: name})});
+        //     if (!response.ok) {
+        //         throw new Error(`Response status: ${response.status}`);
+        //     }
+        //     setMsg('')
+        // } catch (error) {
+        //     console.error(error.message);
+        // }
     }
     let getMessages = async () => {
         const url = "/messages";
@@ -75,9 +94,7 @@ function App() {
     }
 
     useEffect(() => {
-        setInterval(() => {
-            getMessages()
-        }, 1000)
+        getMessages()
     }, []);
 
     return (
@@ -89,9 +106,8 @@ function App() {
                 <Switch checked={phonemeOrToggle} onChange={(e) => {
                     setPhonemeOrToggle(e.target.checked)
                 }}></Switch>
-                {hasNotifications === "granted" ? '' : <button onClick={()=>{
-                    let promise = Notification.requestPermission();
-                    promise.then(setHasNotifications(Notification.permission))
+                {Notification.permission === "granted" ? '' : <button onClick={()=>{
+                    Notification.requestPermission()
                 }}><code>Click to subscribe to notifications</code></button>}
                 <input type='text' onChange={(e) => setMsg(e.target.value)} value={msg}></input>
                 <button onClick={() => sendMessage()}>

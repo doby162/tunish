@@ -43,7 +43,6 @@ func main() {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(resp)
-
 	})
 	r.Post("/messages", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
@@ -67,6 +66,11 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+	})
+	hub := newHub(&messages)
+	go hub.run()
+	r.Get("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hub, w, r)
 	})
 
 	// This serves everything under "/"
