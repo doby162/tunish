@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -26,10 +26,7 @@ type MessagesGetResponse struct {
 	Messages []Message `json:"messages"`
 }
 
-func main() {
-
-	messages := []Message{}
-
+func Api(messages *[]Message) error {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -38,10 +35,11 @@ func main() {
 
 	r.Get("/messages", func(w http.ResponseWriter, r *http.Request) {
 		mes := messages
-		if len(messages) > 10 {
-			mes = messages[len(messages)-10:]
+		if len(*messages) > 10 {
+			tmp := (*messages)[len(*messages)-10:]
+			mes = &tmp
 		}
-		resp, err := json.Marshal(MessagesGetResponse{mes})
+		resp, err := json.Marshal(MessagesGetResponse{*mes})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -61,14 +59,15 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		messages = append(messages, Message{Message: req.Message, Name: req.Name})
+		tmp := append(*messages, Message{Message: req.Message, Name: req.Name})
+		messages = &tmp
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	})
-	hub := newHub(&messages)
+	hub := newHub(messages)
 	go hub.run()
 	r.Get("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
@@ -79,8 +78,5 @@ func main() {
 		http.StripPrefix("/", fs).ServeHTTP(w, r)
 	})
 
-	err := http.ListenAndServeTLS(":3000", "cert.pem", "key.pem", r)
-	if err != nil {
-		return
-	}
+	return http.ListenAndServeTLS(":3000", "cert.pem", "key.pem", r)
 }
