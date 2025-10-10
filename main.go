@@ -37,7 +37,11 @@ func main() {
 	fs := http.FileServer(http.Dir("frontend/toonishFE/dist/"))
 
 	r.Get("/messages", func(w http.ResponseWriter, r *http.Request) {
-		resp, err := json.Marshal(MessagesGetResponse{messages})
+		mes := messages
+		if len(messages) > 10 {
+			mes = messages[len(messages)-10:]
+		}
+		resp, err := json.Marshal(MessagesGetResponse{mes})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -58,9 +62,6 @@ func main() {
 			return
 		}
 		messages = append(messages, Message{Message: req.Message, Name: req.Name})
-		if len(messages) > 10 {
-			messages = messages[len(messages)-10:]
-		}
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
