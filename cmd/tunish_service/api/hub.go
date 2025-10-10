@@ -1,5 +1,7 @@
 package api
 
+import "toonish2/internal/message_slice"
+
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
@@ -15,10 +17,10 @@ type Hub struct {
 	// Unregister requests from clients.
 	unregister chan *Client
 
-	messages *[]Message
+	messages *message_slice.MessageSlice
 }
 
-func newHub(messages *[]Message) *Hub {
+func newHub(messages *message_slice.MessageSlice) *Hub {
 	return &Hub{
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),

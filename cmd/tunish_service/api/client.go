@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"toonish2/internal/message_slice"
 
 	"github.com/gorilla/websocket"
 )
@@ -67,13 +68,13 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		var msg Message
+		var msg message_slice.Message
 		err = json.Unmarshal(message, &msg)
 		if err != nil {
 			//oops
 		}
-		*c.hub.messages = append(*c.hub.messages, msg)
-		c.hub.broadcast <- message
+		c.hub.broadcast <- message // broadcast the message
+		c.hub.messages.Append(msg) // store the message in the log
 	}
 }
 

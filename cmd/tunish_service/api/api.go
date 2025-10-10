@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"io/ioutil"
 	"net/http"
+	"toonish2/internal/message_slice"
 )
 
 type postResponse struct {
@@ -17,16 +18,11 @@ type postRequest struct {
 	Name    string `json:"name"`
 }
 
-type Message struct {
-	Message string `json:"message"`
-	Name    string `json:"name"`
-}
-
 type MessagesGetResponse struct {
-	Messages []Message `json:"messages"`
+	Messages []message_slice.Message `json:"messages"`
 }
 
-func Api(messages *[]Message) error {
+func Api(messages *message_slice.MessageSlice) error {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -34,11 +30,8 @@ func Api(messages *[]Message) error {
 	fs := http.FileServer(http.Dir("frontend/toonishFE/dist/"))
 
 	r.Get("/messages", func(w http.ResponseWriter, r *http.Request) {
-		mes := messages
-		if len(*messages) > 10 {
-			*mes = (*messages)[len(*messages)-10:]
-		}
-		resp, err := json.Marshal(MessagesGetResponse{*mes})
+		mes := messages.Recent(10)
+		resp, err := json.Marshal(MessagesGetResponse{mes})
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -58,7 +51,7 @@ func Api(messages *[]Message) error {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		*messages = append(*messages, Message{Message: req.Message, Name: req.Name})
+		messages.Append(message_slice.Message{Message: req.Message, Name: req.Name})
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
