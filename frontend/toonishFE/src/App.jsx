@@ -15,18 +15,14 @@ function App() {
     const [mod, setMod] = useState(false)
     const [phonemeOrToggle, setPhonemeOrToggle] = useState(false)
     const conn = useRef(null);
-    const [interval, setIntervalNum] = useState(0)
-    const [tryHttp, setTryHttp] = useState(false)
 
     useEffect(() => {
         if (!conn.current) {
             conn.current = new WebSocket("wss://192.168.1.103:3000/ws")
-            setTryHttp(false)
         }
         if(conn.current) {
-            conn.current.onclose = function (evt) {
+            conn.current.onclose = function () {
                 conn.current = null
-                setTryHttp(true)
             };
             conn.current.onmessage = function (evt) {
                 setMessages(messages.concat(JSON.parse(evt.data)))
@@ -70,18 +66,6 @@ function App() {
         if (conn.current && conn.current.readyState === 1) {
             conn.current.send(JSON.stringify({message: msg, name: name}))
             setMsg('')
-        } else {
-            const url = "/messages";
-            try {
-                const response = await fetch(url,
-                    {method: 'POST', body: JSON.stringify({message: msg, name: name})});
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                setMsg('')
-            } catch (error) {
-                console.error(error.message);
-            }
         }
     }
     let getMessages = async () => {
@@ -100,12 +84,7 @@ function App() {
 
     useEffect(() => {
         getMessages()
-        if (!interval && (!conn.current || conn.current.readyState !== 1)) {
-            setIntervalNum(setInterval(()=>{getMessages()}, 1000))
-        } else {
-            clearInterval(interval)
-        }
-    }, [conn, tryHttp]);
+    }, []);
 
     return (
         <>
