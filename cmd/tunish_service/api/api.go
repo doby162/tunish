@@ -36,8 +36,7 @@ func Api(messages *[]Message) error {
 	r.Get("/messages", func(w http.ResponseWriter, r *http.Request) {
 		mes := messages
 		if len(*messages) > 10 {
-			tmp := (*messages)[len(*messages)-10:]
-			mes = &tmp
+			*mes = (*messages)[len(*messages)-10:]
 		}
 		resp, err := json.Marshal(MessagesGetResponse{*mes})
 		if err != nil {
@@ -59,8 +58,7 @@ func Api(messages *[]Message) error {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmp := append(*messages, Message{Message: req.Message, Name: req.Name})
-		messages = &tmp
+		*messages = append(*messages, Message{Message: req.Message, Name: req.Name})
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(postResponse{Status: http.StatusOK, Message: req.Message}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
